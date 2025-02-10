@@ -1,0 +1,38 @@
+{
+    "Grade XII - Joey Gurango": {
+        "male": [
+            "zed1",
+            "noora",
+            "zed"
+        ],
+        "female": [
+            "basta1 babae",
+            "basta2 babae",
+            "basta3 babae"
+        ]
+    },
+    "Grade XII - John Doe": {
+        "male": [
+            "john1",
+            "john2",
+            "john3"
+        ],
+        "female": [
+            "jane1",
+            "jane2",
+            "jane3"
+        ]
+    },
+    "Grade XII - Jane Smith": {
+        "male": [
+            "smith1",
+            "smith2",
+            "smith3"
+        ],
+        "female": [
+            "jane1",
+            "jane2",
+            "jane3"
+        ]
+    }
+}

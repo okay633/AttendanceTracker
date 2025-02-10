@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student List</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* Basic styling for the student list container */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .student-list-container {
+            display: none; /* Hide initially */
+            opacity: 0;
+            transform: scale(0.9);
+            transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            margin: 50px auto;
+            text-align: center;
+        }
+
+        .student-list-container.visible {
+            display: block;
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #f9f9f9;
+            transition: background-color 0.3s;
+        }
+
+        li:hover {
+            background-color: #f1f1f1;
+        }
+
+        input[type="time"] {
+            margin-left: 10px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px 0;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .alert {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-50px);
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            font-size: 1rem;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+        }
+        
+        .alert.visible {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="student-list-container">
+        <h2>Student List</h2>
+        <p>All students on this list are from Grade XII Section Joey Gurango.</p>
+        <form id="attendance-form" action="{{ url_for('student_list') }}" method="POST">
+            <h3>Male Students</h3>
+            <ul>
+                {% for student in student_list.male %}
+                <li>
+                    <span>{{ student }}</span>
+                    <div>
+                        <label>
+                            <input type="radio" name="status_{{ student }}" value="present" checked> Present
+                        </label>
+                        <label>
+                            <input type="radio" name="status_{{ student }}" value="absent"> Absent
+                        </label>
+                        <label>
+                            <input type="radio" name="status_{{ student }}" value="late"> Late
+                            <input type="time" name="time_{{ student }}">
+                        </label>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+
+            <h3>Female Students</h3>
+            <ul>
+                {% for student in student_list.female %}
+                <li>
+                    <span>{{ student }}</span>
+                    <div>
+                        <label>
+                            <input type="radio" name="status_{{ student }}" value="present" checked> Present
+                        </label>
+                        <label>
+                            <input type="radio" name="status_{{ student }}" value="absent"> Absent
+                        </label>
+                        <label>
+                            <input type="radio" name="status_{{ student }}" value="late"> Late
+                            <input type="time" name="time_{{ student }}">
+                        </label>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+
+            <button type="submit">Submit Attendance</button>
+        </form>
+    </div>
+
+    <!-- Alert message -->
+    <div id="success-alert" class="alert">
+        Attendance successfully submitted!
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Make the whole page fade in
+            document.body.style.opacity = "1";
+
+            // Add visible class to the student list container after page load
+            document.querySelector('.student-list-container').classList.add('visible');
+        });
+
+        document.getElementById('attendance-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form from submitting immediately
+            
+            if (confirm('Are you sure you want to submit the attendance?')) {
+                this.submit(); // Submit the form if confirmed
+                showSuccessAlert();
+            }
+        });
+
+        function showSuccessAlert() {
+            var alert = document.getElementById('success-alert');
+            alert.classList.add('visible');
+            setTimeout(function() {
+                alert.classList.remove('visible');
+            }, 3000); // Hide after 3 seconds
+        }
+    </script>
+</body>
+</html>
